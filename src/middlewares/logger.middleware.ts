@@ -30,42 +30,6 @@ export const loggingMiddleware = (
     })
   );
 
-  res.on('data', (chunk) => {
-    console.log({ chunk });
-    responseData += chunk;
-  });
-
-  const chunks: any = [];
-
-  const oldWrite = res.write;
-  const oldEnd = res.end;
-
-  res.write = (
-    chunk: any,
-    ...args: any[]
-  ) => {
-    chunks.push(chunk);
-    return oldWrite(chunk, ...args);
-  };
-  res.write = (
-    chunk: any,
-    ...args: any[]
-  ) => {
-    console.log(chunk);
-    chunks.push(chunk);
-    return oldWrite(chunk, ...args);
-  };
-
-  res.end = (
-    chunk: any,
-    ...args: any[]
-  ) => {
-    if (chunk) {
-      chunks.push(chunk);
-    }
-    return oldEnd(chunk, ...args);
-  };
-
   res.on('finish', () => {
     const endTime = Date.now();
     const duration =
