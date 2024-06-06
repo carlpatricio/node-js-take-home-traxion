@@ -37,3 +37,33 @@ export const errorMiddleware: ErrorRequestHandler =
     });
     next();
   };
+export class ErrorMiddleware {
+  public static handleError(
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void {
+    const { status, message: errMsg } =
+      err;
+    let message = errMsg;
+    if (err instanceof AxiosError) {
+      message =
+        err.response?.data?.message ??
+        message;
+    }
+    logger.error(
+      JSON.stringify({
+        err,
+        message,
+        status,
+      })
+    );
+    res.status(status || 500).json({
+      status,
+      message,
+      timestamp: new Date(),
+    });
+    next();
+  }
+}

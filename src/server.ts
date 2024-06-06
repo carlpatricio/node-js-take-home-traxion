@@ -7,17 +7,21 @@ import express, {
 import { logger } from './common';
 import { GeolocationController } from './controller';
 import {
-  errorMiddleware,
-  loggingMiddleware,
+  ErrorMiddleware,
+  LoggingMiddleware,
 } from './middlewares/';
 config();
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default to 3000
 app.use(express.json());
+
+/**
+ * Routes
+ */
 const geolocationController =
   new GeolocationController();
 app.use(
-  '/api',
+  '/api/geolocation',
   geolocationController.handleRequest.bind(
     geolocationController
   )
@@ -39,8 +43,11 @@ app.get(
   }
 );
 
-app.use(errorMiddleware);
-app.use(loggingMiddleware);
+/**
+ * Middlewares
+ */
+app.use(ErrorMiddleware.handleError);
+app.use(LoggingMiddleware.handle);
 app.listen(port, () => {
   logger.info(
     `Server is listening on port ${port}`
