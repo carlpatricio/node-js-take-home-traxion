@@ -26,7 +26,14 @@ export class GeolocationController extends BaseController {
       process.env
         .OPEN_WEATHER_API_KEY ?? '';
   }
-
+  /**
+   * Handles the incoming request and sends the response.
+   *
+   * @param {Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>} req - The request object.
+   * @param {Response<any, Record<string, any>>} res - The response object.
+   * @param {NextFunction} next - The next function.
+   * @return {Promise<void>} Promise that resolves when the handling is complete.
+   */
   public async handleRequest(
     req: Request<
       ParamsDictionary,
@@ -93,7 +100,12 @@ export class GeolocationController extends BaseController {
       next(error);
     }
   }
-
+  /**
+   * Filters the given data by selecting only the specified fields.
+   *
+   * @param {any[]} data - The data to be filtered.
+   * @return {any[]} The filtered data with only the selected fields.
+   */
   private filterData(data: any) {
     const filteredData = data.map(
       (obj: { [key: string]: any }) => {
