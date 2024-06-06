@@ -6,10 +6,7 @@ import {
 } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
-import {
-  httpCall,
-  logger,
-} from '../common';
+import { httpCall } from '../common';
 import { GEOLOCATION_SELECTED_FIELDS } from '../common/constants';
 import { BaseController } from './base.controller';
 
@@ -35,19 +32,10 @@ export class GeolocationController extends BaseController {
    * @return {Promise<void>} Promise that resolves when the handling is complete.
    */
   public async handleRequest(
-    req: Request<
-      ParamsDictionary,
-      any,
-      any,
-      ParsedQs,
-      Record<string, any>
-    >,
-    res: Response<
-      any,
-      Record<string, any>
-    >,
+    req: Request,
+    res: Response,
     next: NextFunction
-  ): Promise<void> {
+  ): Promise<any> {
     try {
       const {
         cityName,
@@ -79,18 +67,10 @@ export class GeolocationController extends BaseController {
         );
       }
 
-      logger.info(
-        JSON.stringify({
-          type: 'outgoingHTTP',
-          status,
-          data,
-        })
-      );
-
       const filteredData =
         this.filterData(data);
 
-      res
+      return res
         .status(HttpStatusCode.Ok)
         .json({
           status: HttpStatusCode.Ok,

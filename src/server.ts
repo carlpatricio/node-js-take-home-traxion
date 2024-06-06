@@ -5,11 +5,11 @@ import express, {
   Response,
 } from 'express';
 import { logger } from './common';
-import { GeolocationController } from './controller';
 import {
   ErrorMiddleware,
   LoggingMiddleware,
 } from './middlewares/';
+import { setUpRoutes } from './routes';
 config();
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default to 3000
@@ -18,15 +18,7 @@ app.use(express.json());
 /**
  * Routes
  */
-const geolocationController =
-  new GeolocationController();
-app.use(
-  '/api/geolocation',
-  geolocationController.handleRequest.bind(
-    geolocationController
-  )
-);
-
+setUpRoutes(app);
 app.get(
   '/',
   (
