@@ -19,7 +19,14 @@ export class WeatherController extends BaseController {
       process.env
         .OPEN_WEATHER_API_KEY ?? '';
   }
-
+  /**
+   * Handles the incoming request and sends the response.
+   *
+   * @param {Request} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next middleware function.
+   * @return {Promise<any>} A promise that resolves with the response data.
+   */
   public async handleRequest(
     req: Request,
     res: Response,
