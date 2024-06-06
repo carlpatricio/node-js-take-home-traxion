@@ -2,7 +2,12 @@ import { query } from 'express-validator';
 import { GeolocationController } from './controller';
 import { WeatherController } from './controller/weather.controller';
 import { ValidatEMiddleware } from './middlewares';
-
+/**
+ * Sets up routes for the given Express app.
+ *
+ * @param {any} app - The Express app to set up routes for.
+ * @return {void} This function does not return anything.
+ */
 export const setUpRoutes = (
   app: any
 ) => {
