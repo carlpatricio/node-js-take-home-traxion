@@ -4,7 +4,7 @@ import {
   Request,
   Response,
 } from 'express';
-import { httpCall } from '../common';
+import { UtilClass } from '../common';
 import { BaseController } from './base.controller';
 
 export class WeatherController extends BaseController {
@@ -33,6 +33,10 @@ export class WeatherController extends BaseController {
     next: NextFunction
   ): Promise<any> {
     try {
+      if (this.apiKey)
+        throw new Error(
+          'API Key not found'
+        );
       const {
         latitude,
         longtitude,
@@ -44,12 +48,14 @@ export class WeatherController extends BaseController {
         appid: this.apiKey,
         exclude,
       };
+
       const { data, status } =
-        await httpCall(
+        await UtilClass.httpCall(
           'get',
           `${this.baseUrl}/data/3.0/onecall`,
           params
         );
+
       if (
         status !== HttpStatusCode.Ok
       ) {
@@ -58,8 +64,8 @@ export class WeatherController extends BaseController {
         );
       }
 
-      delete data.lon;
-      delete data.lat;
+      delete data?.lon;
+      delete data?.lat;
       const {
         daily,
         minutely,

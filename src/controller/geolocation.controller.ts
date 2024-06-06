@@ -4,9 +4,7 @@ import {
   Request,
   Response,
 } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
-import { httpCall } from '../common';
+import { UtilClass } from '../common';
 import { GEOLOCATION_SELECTED_FIELDS } from '../common/constants';
 import { BaseController } from './base.controller';
 
@@ -26,8 +24,8 @@ export class GeolocationController extends BaseController {
   /**
    * Handles the incoming request and sends the response.
    *
-   * @param {Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>} req - The request object.
-   * @param {Response<any, Record<string, any>>} res - The response object.
+   * @param {Request} req - The request object.
+   * @param {Response} res - The response object.
    * @param {NextFunction} next - The next function.
    * @return {Promise<void>} Promise that resolves when the handling is complete.
    */
@@ -37,6 +35,10 @@ export class GeolocationController extends BaseController {
     next: NextFunction
   ): Promise<any> {
     try {
+      if (this.apiKey)
+        throw new Error(
+          'API Key not found'
+        );
       const {
         cityName,
         stateCode,
@@ -53,7 +55,7 @@ export class GeolocationController extends BaseController {
         appid: this.apiKey,
       };
       const { data, status } =
-        await httpCall(
+        await UtilClass.httpCall(
           'get',
           `${this.baseUrl}/geo/1.0/direct`,
           params
@@ -69,7 +71,6 @@ export class GeolocationController extends BaseController {
 
       const filteredData =
         this.filterData(data);
-
       return res
         .status(HttpStatusCode.Ok)
         .json({
@@ -96,6 +97,7 @@ export class GeolocationController extends BaseController {
         return newObj;
       }
     );
+
     return filteredData;
   }
 }
