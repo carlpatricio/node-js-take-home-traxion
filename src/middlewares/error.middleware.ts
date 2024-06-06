@@ -38,6 +38,15 @@ export const errorMiddleware: ErrorRequestHandler =
     next();
   };
 export class ErrorMiddleware {
+  /**
+   * Handles the error that occurred during the request.
+   *
+   * @param {any} err - The error object.
+   * @param {Request} req - The request object.
+   * @param {Response} res - The response object.
+   * @param {NextFunction} next - The next middleware function.
+   * @return {void} This function does not return anything.
+   */
   public static handleError(
     err: any,
     req: Request,
