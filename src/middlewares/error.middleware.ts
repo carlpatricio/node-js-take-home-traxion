@@ -22,7 +22,7 @@ export const errorMiddleware: ErrorRequestHandler =
         err.response?.data?.message ??
         message;
     }
-
+    console.log({ err });
     logger.error(
       JSON.stringify({
         err,
