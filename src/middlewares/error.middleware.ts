@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import {
   NextFunction,
   Request,
@@ -13,7 +14,15 @@ export const errorMiddleware: ErrorRequestHandler =
     res: Response,
     next: NextFunction
   ) => {
-    const { status, message } = err;
+    const { status, message: errMsg } =
+      err;
+    let message = errMsg;
+    if (err instanceof AxiosError) {
+      message =
+        err.response?.data?.message ??
+        message;
+    }
+
     logger.error(
       JSON.stringify({
         err,
@@ -22,7 +31,6 @@ export const errorMiddleware: ErrorRequestHandler =
       })
     );
     res.status(status || 500).json({
-      err,
       status,
       message,
       timestamp: new Date(),
