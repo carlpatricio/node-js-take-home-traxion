@@ -14,7 +14,6 @@ config();
 const app = express();
 const port = process.env.PORT || 3000; // Use environment variable or default to 3000
 app.use(express.json());
-
 /**
  * Routes
  */

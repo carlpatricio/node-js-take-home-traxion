@@ -44,7 +44,7 @@ export class WeatherController extends BaseController {
         appid: this.apiKey,
         exclude,
       };
-
+      console.log(this);
       const { data, status } =
         await httpCall(
           'get',
